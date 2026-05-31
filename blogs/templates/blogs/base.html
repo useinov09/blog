@@ -1,0 +1,84 @@
+<!doctype html>
+{% load django_bootstrap5 %}
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <title>Blog</title>
+    {% bootstrap_css %}
+    <style>
+        .add_btn {
+            font-size: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .add_btn { font-size: 20px; }
+        }
+
+        .form-control {
+            background-color: #f8f9fa;
+            border-color: #495057;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #000;
+            box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.15);
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light border-bottom py-3 mb-4">
+    <div class="container">
+        <a class="navbar-brand fs-2 fw-bold text-dark"
+           href="{% url 'blogs:index' %}">
+            Мой блог
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end "
+             id="navbarCollapse">
+            <div class="d-flex justify-content-between gap-3 mt-3 mt-lg-0">
+                {% if user.is_authenticated %}
+                    <span class="badge rounded px-3 py-2 fw-normal"
+                          style="border: 1px solid #b5b8b1; color: #000; font-size: 14px;">
+                        Привет, {{ user.username }}
+                    </span>
+                    <form action="{% url 'users:logout' %}"
+                          method="post"
+                          class="m-0">
+
+                        {% csrf_token %}
+
+                        <button class="btn btn-sm btn-outline-danger"
+                                type="submit">
+                            Выйти
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'users:register' %}">
+                        Регистрация
+                    </a>
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'users:login' %}">
+                        Войти
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    {% block content %}{% endblock content %}
+</main>
+
+{% bootstrap_javascript %}
+</body>
+</html>

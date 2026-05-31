@@ -1,0 +1,52 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+<div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+    <div class="col-md-9 px-0">
+        <h1 class="display-4 fw-bold">Добро пожаловать в &laquo;Мой блог&raquo;</h1>
+        <p class="lead my-3">
+            Путешествия, технологии и всё, что вам интересно — пишите для себя, для друзей, для кого угодно.
+        </p>
+    </div>
+</div>
+<div class="d-flex flex-column align-items-center p-4 mb-5 bg-light">
+    <p class="fs-1 fw-bold">Мои посты</p>
+    <p class="fs-5">И не только мои...</p>
+</div>
+
+
+<div class="d-flex mb-3 align-items-center flex-column gap-2">
+    <a style="margin-bottom: 40px;" class="btn btn-outline-dark add_btn" href="{% url 'blogs:new_entry' %}">
+        <i class="bi bi-plus-lg"></i>
+        Добавить заметку
+    </a>
+    <div class="d-flex align-items-center ms-auto gap-1">
+        <span class="text-danger fs-5 lh-1">*</span>
+        <small class="text-muted text-decoration-underline me-2 mb-0">вы можете изменять только свои посты</small>
+    </div>
+</div>
+
+<div class="d-flex flex-column gap-3 mb-4 mt-0">
+    {% for post in posts %}
+        <div class="card rounded-3 p-3 {% if post.owner == request.user %}border-start border-dark border-3{% endif %}">
+            <div class="d-flex justify-content-between">
+                <p class="fw-semibold mb-1">{{ post.title }}</p>
+            </div>
+            <p class="text-secondary mb-3">{{ post.text }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">{{ post.date|date:'M d, Y H:i' }}</small>
+                {% if post.owner == request.user %}
+                    <a href="{% url 'blogs:edit_entry' post.id %}" class="btn btn-sm btn-outline-dark">
+                        Изменить
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">Здесь ещё ничего нет...</p>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
+]
